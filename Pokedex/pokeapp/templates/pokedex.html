@@ -55,19 +55,51 @@
   <body>
     <div class="pokemon-container">
       <h1>Pokedex</h1>
+      <form method="get" action="" style="margin-bottom: 20px; display: flex; justify-content: center; gap: 10px;">
+        <input 
+          type="text" 
+          name="search" 
+          placeholder="Rechercher un Pokémon..." 
+          value="{{ request.GET.search|default:'' }}" 
+          style="padding: 5px; font-size: 16px; width: 300px;"
+        />
+        <button type="submit" style="padding: 5px 10px; font-size: 16px;">Rechercher</button>
+        <a href="{% url 'team_view' %}" 
+           style="padding: 5px 10px; font-size: 16px; background-color: #2196F3; color: white; text-decoration: none;">
+          Voir l'équipe
+        </a>
+      </form>
+    
       <ul>
         {% for pokemon in pokemons %}
-        <li>
-          <img
-            src="{{ pokemon.image_url|default:'https://via.placeholder.com/80' }}"
-            alt="{{ pokemon.name }}"
-            width="80"
-            height="80"
-          />
-          <p><a href="{% url 'pokemon_detail' pokemon.english_name %}">{{ pokemon.name }}</a></p>
+        <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-right: 20px;">
+          <div style="display: flex; align-items: center;">
+            <img
+              src="{{ pokemon.image_url|default:'https://via.placeholder.com/80' }}"
+              alt="{{ pokemon.name }}"
+              width="80"
+              height="80"
+            />
+            <p style="margin-left: 10px;"><a href="{% url 'pokemon_detail' pokemon.english_name %}">{{ pokemon.name }}</a></p>
+          </div>
+          <div>
+            <!-- Afficher le bouton "Ajouter" uniquement si le Pokémon n'est pas dans l'équipe -->
+            {% if not pokemon.in_team %}
+            <a href="?add={{ pokemon.name }}" 
+               style="padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none; margin-right: 5px;">
+              Ajouter
+            </a>
+            {% else %}
+            <!-- Afficher le bouton "Retirer" si le Pokémon est dans l'équipe -->
+            <a href="?remove={{ pokemon.name }}" 
+               style="padding: 5px 10px; background-color: #f44336; color: white; text-decoration: none;">
+              Retirer
+            </a>
+            {% endif %}
+          </div>
         </li>
         {% endfor %}
       </ul>
-    </div>
+    </div>    
   </body>
 </html>
