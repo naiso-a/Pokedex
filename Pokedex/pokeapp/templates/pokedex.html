@@ -52,7 +52,6 @@
       }
     </style>
   </head>
-  
   <body>
     <div class="pokemon-container">
       <h1>Pokedex</h1>
@@ -81,7 +80,7 @@
               width="80"
               height="80"
             />
-            <p style="margin-left: 10px;">{{ pokemon.name }}</p>
+            <p style="margin-left: 10px;"><a href="{% url 'pokemon_detail' pokemon.english_name %}">{{ pokemon.name }}</a></p>
           </div>
           <div>
             <!-- Afficher le bouton "Ajouter" uniquement si le Pokémon n'est pas dans l'équipe -->
@@ -114,43 +113,3 @@
   </body>
 </html>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Ajouter un événement sur tous les boutons Ajouter/Retirer
-    document.querySelectorAll('.pokemon-action').forEach(button => {
-      button.addEventListener('click', function (e) {
-        e.preventDefault(); // Empêche le rechargement de la page
-        const url = this.getAttribute('href'); // Récupère l'URL de l'action
-        const pokemonName = this.dataset.name; // Nom du Pokémon
-
-        fetch(url, {
-          method: 'GET', // Effectue une requête GET
-          headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              // Trouver l'élément contenant le bouton
-              const listItem = document.querySelector(`#pokemon-${pokemonName}`);
-              // Met à jour l'état du bouton selon l'action
-              if (data.action === 'added') {
-                listItem.querySelector('.pokemon-action').outerHTML = `
-                  <a href="?remove=${pokemonName}" data-name="${pokemonName}" 
-                     class="pokemon-action" 
-                     style="padding: 5px 10px; background-color: #f44336; color: white; text-decoration: none;">
-                    Retirer
-                  </a>`;
-              } else if (data.action === 'removed') {
-                listItem.querySelector('.pokemon-action').outerHTML = `
-                  <a href="?add=${pokemonName}" data-name="${pokemonName}" 
-                     class="pokemon-action" 
-                     style="padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none;">
-                    Ajouter
-                  </a>`;
-              }
-            }
-          });
-      });
-    });
-  });
-</script>
