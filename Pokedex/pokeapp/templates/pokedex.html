@@ -7,99 +7,162 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        color: #333;
-        height: 100vh;
+        background-color: #880101; /* Fond rouge */
+        color: #ffffff; /* Texte blanc */
         margin: 0;
+        height: 100vh;
+        text-align: center;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffffff; /* Titre en blanc */
       }
 
       .pokemon-container {
-        text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
       }
 
-      h1 {
+      form {
         margin-bottom: 20px;
-      }
-
-      ul {
-        list-style-type: none;
-        padding: 0;
-        width: 100%;
-      }
-
-      li {
         display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      form input[type="text"] {
+        padding: 5px;
+        font-size: 16px;
+        width: 300px;
+        background-color: #000000; /* Fond noir */
+        color: #ffffff; /* Texte blanc */
+        border: 1px solid #ffffff; /* Bordure blanche */
+      }
+
+      form button {
+        padding: 5px 10px;
+        font-size: 16px;
+        background-color: #000000; /* Fond noir */
+        color: #ffffff; /* Texte blanc */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      form button:hover {
+        background-color: #333333; /* Fond gris foncé au survol */
+      }
+
+      a[href="{% url 'team_view' %}"] {
+        background-color: #000000; /* Fond noir */
+        color: #ffffff; /* Texte blanc */
+        padding: 5px 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        text-decoration: none;
+      }
+
+      a[href="{% url 'team_view' %}"]:hover {
+        background-color: #333333; /* Fond gris foncé au survol */
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Trois colonnes */
+        gap: 20px; /* Espace entre les éléments de la grille */
+        padding: 0;
+        width: 80%;
+        margin: 0 auto; /* Centrer la grille */
+      }
+
+      .grid-item {
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        margin-bottom: 20px; /* Augmenter l'espacement si nécessaire */
-        margin-left: 90px;
+        background-color: #333333; /* Fond des items */
+        padding: 10px;
+        border-radius: 10px;
       }
 
       img {
-        margin-right: 15px;
         border-radius: 50%;
         width: 120px;
         height: 120px;
         object-fit: cover;
       }
 
-      li p {
+      .grid-item p {
         margin: 0;
-        font-weight: bold; /* Texte en gras appliqué ici */
-        font-size: 25px; /* Ajuster la taille de la police si nécessaire */
+        font-weight: bold;
+        font-size: 20px;
+        color: #ffffff;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      p {
+        margin-top: 30px;
+      }
+
+      a[href*="?add="] {
+        background-color: #ffffff; /* Fond blanc */
+        color: #000000; /* Texte noir */
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-right: 5px;
+      }
+
+      a[href*="?remove="] {
+        background-color: #0000ff; /* Fond bleu */
+        color: #ffffff; /* Texte blanc */
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
       }
     </style>
   </head>
   <body>
     <div class="pokemon-container">
       <h1>Pokedex</h1>
-      <form method="get" action="" style="margin-bottom: 20px; display: flex; justify-content: center; gap: 10px;">
+      <form method="get" action="">
         <input 
           type="text" 
           name="search" 
           placeholder="Rechercher un Pokémon..." 
-          value="{{ request.GET.search|default:'' }}" 
-          style="padding: 5px; font-size: 16px; width: 300px;"
+          value="{{ request.GET.search|default:'' }}"
         />
-        <button type="submit" style="padding: 5px 10px; font-size: 16px;">Rechercher</button>
-        <a href="{% url 'team_view' %}" 
-           style="padding: 5px 10px; font-size: 16px; background-color: #2196F3; color: white; text-decoration: none;">
-          Voir l'équipe
-        </a>
+        <button type="submit">Rechercher</button>
+        <a href="{% url 'team_view' %}">Voir l'équipe</a>
       </form>
     
-      <ul>
+      <div class="grid-container">
         {% for pokemon in pokemons %}
-        <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-right: 20px;">
-          <div style="display: flex; align-items: center;">
-            <img
-              src="{{ pokemon.image_url|default:'https://via.placeholder.com/80' }}"
-              alt="{{ pokemon.name }}"
-              width="80"
-              height="80"
-            />
-            <p style="margin-left: 10px;"><a href="{% url 'pokemon_detail' pokemon.english_name %}">{{ pokemon.name }}</a></p>
-          </div>
+        <div class="grid-item">
+          <img
+            src="{{ pokemon.image_url|default:'https://via.placeholder.com/120' }}"
+            alt="{{ pokemon.name }}"
+          />
+          <p>
+            <a href="{% url 'pokemon_detail' pokemon.english_name %}" style="text-decoration: none; color: inherit;">
+              {{ pokemon.name }}
+            </a>
+          </p>
           <div>
-            <!-- Afficher le bouton "Ajouter" uniquement si le Pokémon n'est pas dans l'équipe -->
             {% if not pokemon.in_team %}
-            <a href="?add={{ pokemon.name }}" 
-               style="padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none; margin-right: 5px;">
-              Ajouter
-            </a>
+            <a href="?add={{ pokemon.name }}">Ajouter</a>
             {% else %}
-            <!-- Afficher le bouton "Retirer" si le Pokémon est dans l'équipe -->
-            <a href="?remove={{ pokemon.name }}" 
-               style="padding: 5px 10px; background-color: #f44336; color: white; text-decoration: none;">
-              Retirer
-            </a>
+            <a href="?remove={{ pokemon.name }}">Retirer</a>
             {% endif %}
           </div>
-        </li>
+        </div>
         {% endfor %}
-      </ul>
+      </div>
     </div>    
   </body>
 </html>
