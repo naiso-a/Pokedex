@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Équipe</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .team-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .pokemon-card {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .pokemon-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .pokemon-card p {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mon Équipe</h1>
+  <div class="team-container">
+    {% for pokemon in team %}
+    <div class="pokemon-card">
+      <img src="{{ pokemon.image_url|default:'https://via.placeholder.com/80' }}" alt="{{ pokemon.name }}">
+      <p>{{ pokemon.name }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  <a href="{% url 'pokedex' %}">Retour au Pokédex</a>
+</body>
+</html>
