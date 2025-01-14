@@ -57,6 +57,10 @@
     <div class="pokemon-card">
       <img src="{{ pokemon.image_url|default:'https://via.placeholder.com/80' }}" alt="{{ pokemon.name }}">
       <p>{{ pokemon.name }}</p>
+      <a href="?clear_team=true" 
+      style="margin-top: 20px; padding: 10px 20px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px;">
+      Supprimer l'équipe
+      </a>
     </div>
     {% endfor %}
   </div>

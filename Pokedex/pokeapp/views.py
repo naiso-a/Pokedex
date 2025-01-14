@@ -2,6 +2,7 @@ from django.core.cache import cache
 import requests
 from django.shortcuts import render, redirect
 from .models import Pokemon
+
 def pokedex(request):
     search_query = request.GET.get('search', '').lower()
     pokemons = cache.get('translated_pokemons')
@@ -38,10 +39,14 @@ def pokedex(request):
     else:
         translated_pokemons = pokemons
 
+    # Marquer si chaque Pokémon est déjà dans l'équipe
+    for pokemon in translated_pokemons:
+        pokemon['in_team'] = pokemon['name'] in team
+
     # Ajouter un Pokémon à l'équipe
     if 'add' in request.GET:
         pokemon_name = request.GET.get('add')
-        if pokemon_name not in team and len(team) < 7:
+        if pokemon_name not in team and len(team) < 6:
             team.append(pokemon_name)
         request.session['team'] = team
 
@@ -65,12 +70,12 @@ def pokedex(request):
 
 
 def team_view(request):
+    if request.GET.get('clear_team'):
+        request.session['team'] = []
+        return redirect('team_view')
+
     pokemons = cache.get('translated_pokemons', [])
     team_names = request.session.get('team', [])
-
-    # Récupérer les détails des Pokémon de l'équipe
-    team = [
-        pokemon for pokemon in pokemons if pokemon['name'] in team_names
-    ]
+    team = [pokemon for pokemon in pokemons if pokemon['name'] in team_names]
 
     return render(request, 'team.html', {'team': team})
