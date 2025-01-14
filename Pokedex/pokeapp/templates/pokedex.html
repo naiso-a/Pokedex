@@ -55,6 +55,16 @@
   <body>
     <div class="pokemon-container">
       <h1>Pokedex</h1>
+      <form method="get" action="" style="margin-bottom: 20px;">
+        <input 
+          type="text" 
+          name="search" 
+          placeholder="Rechercher un Pokémon..." 
+          value="{{ request.GET.search|default:'' }}" 
+          style="padding: 5px; font-size: 16px; width: 300px;"
+        />
+        <button type="submit" style="padding: 5px 10px; font-size: 16px;">Rechercher</button>
+      </form>
       <ul>
         {% for pokemon in pokemons %}
         <li>
