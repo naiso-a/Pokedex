@@ -7,21 +7,17 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        color: #333;
-        height: 100vh;
+        background-color: #880101; /* Fond rouge */
+        color: #ffffff; /* Texte blanc */
         margin: 0;
-      }
-
-      .pokemon-container {
+        height: 100vh;
         text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
       }
 
       h1 {
+        text-align: center;
         margin-bottom: 20px;
+        color: #ffffff; /* Titre en blanc */
       }
 
       ul {
@@ -33,8 +29,9 @@
       li {
         display: flex;
         align-items: center;
-        margin-bottom: 20px; /* Augmenter l'espacement si nécessaire */
-        margin-left: 90px;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 0 20px;
       }
 
       img {
@@ -47,8 +44,76 @@
 
       li p {
         margin: 0;
-        font-weight: bold; /* Texte en gras appliqué ici */
-        font-size: 25px; /* Ajuster la taille de la police si nécessaire */
+        font-weight: bold;
+        font-size: 25px;
+        color: #ffffff; /* Texte des noms des Pokémon en blanc */
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+
+      a[href*="?add="] {
+        background-color: #ffffff; /* Fond blanc */
+        color: #000000; /* Texte noir */
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-right: 5px;
+      }
+
+
+      a[href*="?remove="] {
+        background-color: #0000ff; /* Fond bleu */
+        color: #ffffff; /* Texte blanc */
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+
+      form {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      form input[type="text"] {
+        padding: 5px;
+        font-size: 16px;
+        width: 300px;
+        background-color: #000000; /* Fond noir */
+        color: #ffffff; /* Texte blanc */
+        border: 1px solid #ffffff; /* Bordure blanche */
+      }
+
+      form button {
+        padding: 5px 10px;
+        font-size: 16px;
+        background-color: #000000; /* Fond noir */
+        color: #ffffff; /* Texte blanc */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      form button:hover {
+        background-color: #333333; /* Fond gris foncé au survol */
+      }
+
+      /* Bouton Voir l'équipe */
+      a[href="{% url 'team_view' %}"] {
+        background-color: #000000; /* Fond noir */
+        color: #ffffff; /* Texte blanc */
+        padding: 5px 10px;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+
+      a[href="{% url 'team_view' %}"]:hover {
+        background-color: #333333; /* Fond gris foncé au survol */
       }
     </style>
   </head>
@@ -80,17 +145,20 @@
               width="80"
               height="80"
             />
-            <p style="margin-left: 10px;"><a href="{% url 'pokemon_detail' pokemon.english_name %}">{{ pokemon.name }}</a></p>
-          </div>
+            <p style="margin-left: 10px;">
+              <a href="{% url 'pokemon_detail' pokemon.english_name %}" 
+                 style="text-decoration: none; color: inherit;">
+                {{ pokemon.name }}
+              </a>
+            </p>
+             </div>
           <div>
-            <!-- Afficher le bouton "Ajouter" uniquement si le Pokémon n'est pas dans l'équipe -->
             {% if not pokemon.in_team %}
             <a href="?add={{ pokemon.name }}" 
                style="padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none; margin-right: 5px;">
               Ajouter
             </a>
             {% else %}
-            <!-- Afficher le bouton "Retirer" si le Pokémon est dans l'équipe -->
             <a href="?remove={{ pokemon.name }}" 
                style="padding: 5px 10px; background-color: #f44336; color: white; text-decoration: none;">
               Retirer

@@ -40,25 +40,25 @@ def pokedex(request):
     else:
         translated_pokemons = pokemons
 
-    # Marquer si chaque Pokémon est déjà dans l'équipe
+
     for pokemon in translated_pokemons:
         pokemon['in_team'] = pokemon['name'] in team
 
-    # Ajouter un Pokémon à l'équipe
+
     if 'add' in request.GET:
         pokemon_name = request.GET.get('add')
         if pokemon_name not in team and len(team) < 6:
             team.append(pokemon_name)
         request.session['team'] = team
 
-    # Retirer un Pokémon de l'équipe
+
     if 'remove' in request.GET:
         pokemon_name = request.GET.get('remove')
         if pokemon_name in team:
             team.remove(pokemon_name)
         request.session['team'] = team
 
-    # Filtrer les résultats
+
     if search_query:
         translated_pokemons = [
             p for p in translated_pokemons if search_query in p['name'].lower()
@@ -71,10 +71,16 @@ def pokedex(request):
 
 
 def team_view(request):
-    if request.GET.get('clear_team'):
-        request.session['team'] = []
-        return redirect('team_view')
+    # Supprimer un Pokémon spécifique
+    remove_pokemon = request.GET.get('remove_pokemon')
+    if remove_pokemon:
+        team = request.session.get('team', [])
+        if remove_pokemon in team:
+            team.remove(remove_pokemon)
+            request.session['team'] = team
+        return redirect('team_view')  # Redirige après suppression
 
+    # Charger les données de l'équipe
     pokemons = cache.get('translated_pokemons', [])
     team_names = request.session.get('team', [])
     team = [pokemon for pokemon in pokemons if pokemon['name'] in team_names]
@@ -95,15 +101,15 @@ def pokemon_detail(request, name):
             name
         )
         
-        height_m = sprite_data['height'] / 10.0  # Conversion de décimètres en mètres
-        weight_kg = sprite_data['weight'] / 10.0  # Conversion de hectogrammes en kilogrammes
+        height_m = sprite_data['height'] / 10.0  
+        weight_kg = sprite_data['weight'] / 10.0  
         context = {
             'name': french_name,
             'image_url': image_url,
             'height': height_m,
             'weight': weight_kg,
             'base_experience': sprite_data['base_experience'],
-            # Ajouter d'autres détails ici si nécessaire
+            
         }
         return render(request, 'pokemon_detail.html', context)
     else:
