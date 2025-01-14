@@ -19,4 +19,5 @@ from pokeapp import views
 
 urlpatterns = [
     path('', views.pokedex, name='pokedex'),
+    path('pokemon/<str:name>/', views.pokemon_detail, name='pokemon_detail'),
 ]

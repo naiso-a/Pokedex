@@ -64,7 +64,7 @@
             width="80"
             height="80"
           />
-          <p>{{ pokemon.name }}</p>
+          <p><a href="{% url 'pokemon_detail' pokemon.english_name %}">{{ pokemon.name }}</a></p>
         </li>
         {% endfor %}
       </ul>
