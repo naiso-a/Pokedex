@@ -53,17 +53,17 @@ Accède au jeu en ouvrant http://127.0.0.1:8000 dans ton navigateur.
 
 
 
-##Fonctionnement du jeu
-###1. Pokedex
+## Fonctionnement du jeu
+### 1. Pokedex
 Lorsque le joueur accède à la page principale du Pokedex, il voit une liste de 150 Pokémon qu'il peut parcourir. Il peut rechercher un Pokémon par son nom (en français) et ajouter des Pokémon à son équipe.
 
-###2. Gestion de l'équipe
+### 2. Gestion de l'équipe
 Le joueur peut gérer son équipe en ajoutant ou en supprimant des Pokémon depuis le Pokedex. L'équipe peut contenir jusqu'à 6 Pokémon.
 
-###3. Combat
+### 3. Combat
 Lorsque l'équipe est prête, le joueur peut commencer un combat contre une équipe d'IA générée aléatoirement. Le combat se déroule au tour par tour, où chaque Pokémon attaque ou change de Pokémon en fonction de ses actions.
 
 L'IA choisit de manière aléatoire entre attaquer ou changer de Pokémon en fonction de ses PV. Les dégâts sont calculés en fonction des statistiques des Pokémon (Attaque, Défense, PV).
 
-###4. Résultats
+### 4. Résultats
 Après chaque combat, le jeu affiche le gagnant (le joueur ou l'IA) et un résumé détaillé du combat, y compris les actions effectuées et les Pokémon KO.
