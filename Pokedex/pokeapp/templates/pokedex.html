@@ -5,131 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokedex</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #880101; /* Fond rouge */
-        color: #ffffff; /* Texte blanc */
-        margin: 0;
-        height: 100vh;
-        text-align: center;
-      }
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: linear-gradient(135deg, #ff4b4b, #ff0000); /* Dégradé rouge */
+    color: #ffffff;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-      h1 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #ffffff; /* Titre en blanc */
-      }
+  h1 {
+    font-size: 3rem;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+  }
 
-      .pokemon-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
+  .pokemon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+  }
 
-      form {
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-      }
+  form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 
-      form input[type="text"] {
-        padding: 5px;
-        font-size: 16px;
-        width: 300px;
-        background-color: #000000; /* Fond noir */
-        color: #ffffff; /* Texte blanc */
-        border: 1px solid #ffffff; /* Bordure blanche */
-      }
+  form input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #333333;
+    transition: box-shadow 0.3s;
+  }
 
-      form button {
-        padding: 5px 10px;
-        font-size: 16px;
-        background-color: #000000; /* Fond noir */
-        color: #ffffff; /* Texte blanc */
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
+  form input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  }
 
-      form button:hover {
-        background-color: #333333; /* Fond gris foncé au survol */
-      }
+  form button, a[href="{% url 'team_view' %}"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    text-decoration: none;
+  }
 
-      a[href="{% url 'team_view' %}"] {
-        background-color: #000000; /* Fond noir */
-        color: #ffffff; /* Texte blanc */
-        padding: 5px 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        text-decoration: none;
-      }
+  form button:hover, a[href="{% url 'team_view' %}"]:hover {
+    background-color: #555555;
+    transform: translateY(-2px);
+  }
 
-      a[href="{% url 'team_view' %}"]:hover {
-        background-color: #333333; /* Fond gris foncé au survol */
-      }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+  }
 
-      .grid-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* Trois colonnes */
-        gap: 20px; /* Espace entre les éléments de la grille */
-        padding: 0;
-        width: 80%;
-        margin: 0 auto; /* Centrer la grille */
-      }
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    color: #333333;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
 
-      .grid-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #333333; /* Fond des items */
-        padding: 10px;
-        border-radius: 10px;
-      }
+  .grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
 
-      img {
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-      }
+  img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #ff4b4b;
+  }
 
-      .grid-item p {
-        margin: 0;
-        font-weight: bold;
-        font-size: 20px;
-        color: #ffffff;
-      }
+  .grid-item p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 10px 0;
+  }
 
-      a {
-        text-decoration: none;
-      }
+  a[href*="?add="], a[href*="?remove="] {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+  }
 
-      p {
-        margin-top: 30px;
-      }
+  a[href*="?add="] {
+    background-color: #4caf50;
+    color: #ffffff;
+  }
 
-      a[href*="?add="] {
-        background-color: #ffffff; /* Fond blanc */
-        color: #000000; /* Texte noir */
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-right: 5px;
-      }
+  a[href*="?add="]:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
 
-      a[href*="?remove="] {
-        background-color: #0000ff; /* Fond bleu */
-        color: #ffffff; /* Texte blanc */
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-    </style>
+  a[href*="?remove="] {
+    background-color: #f44336;
+    color: #ffffff;
+  }
+
+  a[href*="?remove="]:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+  }
+</style>
+
   </head>
   <body>
     <div class="pokemon-container">
-      <h1>Pokedex</h1>
+      <h1>POKEDEX</h1>
       <form method="get" action="">
         <input 
           type="text" 
@@ -139,6 +156,7 @@
         />
         <button type="submit">Rechercher</button>
         <a href="{% url 'team_view' %}">Voir l'équipe</a>
+
       </form>
     
       <div class="grid-container">

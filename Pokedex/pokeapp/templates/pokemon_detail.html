@@ -6,37 +6,97 @@
     <title>{{ name }}</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        background-color: #9b0505; /* Fond rouge */
+        font-family: 'Roboto', Arial, sans-serif;
+        background: linear-gradient(135deg, #ff4b4b, #9b0505); /* Dégradé rouge */
         color: #ffffff; /* Texte blanc */
         margin: 0;
         height: 100vh;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .pokemon-detail {
+        background-color: #333333; /* Fond de la carte */
+        padding: 20px 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         text-align: center;
+        width: 90%;
+        max-width: 500px;
       }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #ffcccc; /* Couleur du titre */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
       img {
         margin-bottom: 20px;
         border-radius: 50%;
-        width: 120px;
-        height: 120px;
+        width: 150px;
+        height: 150px;
         object-fit: cover;
+        border: 4px solid #ffcccc; /* Bordure autour de l'image */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       }
+
       .details {
-        font-size: 18px;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        text-align: left;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.1); /* Fond semi-transparent */
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+      }
+
+      .details p {
+        margin: 5px 0;
+        font-size: 1rem;
+        color: #ffffff;
+        font-weight: bold;
+      }
+
+      .details p span {
+        color: #ffcccc; /* Accentuation des valeurs */
+        font-weight: normal;
+      }
+
+      @media (max-width: 600px) {
+        .pokemon-detail {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        img {
+          width: 120px;
+          height: 120px;
+        }
+
+        .details {
+          font-size: 1rem;
+        }
       }
     </style>
   </head>
   <body>
     <div class="pokemon-detail">
       <h1>{{ name }}</h1>
-      <img src="{{ image_url|default:'https://via.placeholder.com/120' }}" alt="{{ name }}" />
+      <img
+        src="{{ image_url|default:'https://via.placeholder.com/120' }}"
+        alt="{{ name }}"
+      />
       <div class="details">
-        <p>Height: {{ height }} m</p>
-        <p>Weight: {{ weight }} kg</p>
-        <p>Base Experience: {{ base_experience }}</p>
+        <p>Taille: <span>{{ height }} m</span></p>
+        <p>Poids: <span>{{ weight }} kg</span></p>
+        <p>Base Experience: <span>{{ base_experience }}</span></p>
       </div>
     </div>
   </body>

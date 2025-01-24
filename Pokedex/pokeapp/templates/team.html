@@ -6,12 +6,20 @@
   <title>Mon Équipe</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #9b0505; /* Fond rouge */
-      color: #ffffff; /* Texte blanc */
+      font-family: 'Roboto', Arial, sans-serif;
+      background: linear-gradient(135deg, #ff4b4b, #ff0000); /* Dégradé rouge */
+      color: #ffffff;
       margin: 0;
       height: 100vh;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 20px 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     }
 
     .team-container {
@@ -19,47 +27,77 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
     }
+
     .pokemon-card {
       display: flex;
       align-items: center;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      color: #333333;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      width: 300px;
     }
+
+    .pokemon-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
     .pokemon-card img {
+      border-radius: 50%;
       width: 80px;
       height: 80px;
-      border-radius: 50%;
-      margin-right: 10px;
+      object-fit: cover;
+      margin-right: 15px;
+      border: 2px solid #ff4b4b;
     }
+
     .pokemon-card p {
-      margin: 0;
-      font-size: 18px;
+      font-size: 1.2rem;
       font-weight: bold;
+      margin: 0;
     }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #2196F3;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
+
     .remove-button {
-      padding: 5px 10px;
+      padding: 8px 15px;
       background-color: #f44336; /* Rouge pour le bouton supprimer */
-      color: white;
+      color: #ffffff;
       text-decoration: none;
       border-radius: 5px;
-      margin-left: 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-left: auto;
+      transition: background-color 0.3s, transform 0.2s;
     }
-    .pokemon-card p {
-  color: black; /* Texte en noir */
-}
+
+    .remove-button:hover {
+      background-color: #e53935;
+      transform: scale(1.05);
+    }
+
+    a {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #333333;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+      margin: 20px;
+    }
+
+    a:hover {
+      background-color: #555555;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
@@ -69,11 +107,11 @@
     <div class="pokemon-card">
       <img src="{{ pokemon.image_url|default:'https://via.placeholder.com/80' }}" alt="{{ pokemon.name }}">
       <p>{{ pokemon.name }}</p>
-      <!-- Bouton pour supprimer un Pokémon spécifique -->
       <a href="?remove_pokemon={{ pokemon.name }}" class="remove-button">Supprimer</a>
     </div>
     {% endfor %}
   </div>
   <a href="{% url 'pokedex' %}">Retour au Pokédex</a>
+  <a href="{% url 'battle_view' %}" class="btn-danger">Combat Pokémon vs IA</a>
 </body>
 </html>

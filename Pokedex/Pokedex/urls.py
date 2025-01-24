@@ -21,4 +21,7 @@ urlpatterns = [
     path('', views.pokedex, name='pokedex'),
     path('pokemon/<str:name>/', views.pokemon_detail, name='pokemon_detail'),
     path('team/', views.team_view, name='team_view'),
-]
+    path('battle/', views.battle_view, name='battle_view'),
+    path('turn/', views.process_turn, name='process_turn'),
+
+]   

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat du Combat</title>
+    <style>
+ body {
+    font-family: 'Poppins', sans-serif; /* Utilisation de la police Poppins */
+    background-color: #282c34;
+    color: white;
+    padding: 40px;
+    margin: 0;
+    text-align: center;
+}
+
+.popup {
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 15px;
+    display: inline-block;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-winner {
+    background-color: #4CAF50;
+    border: 2px solid #388E3C;
+}
+
+.popup-loser {
+    background-color: #f44336;
+    border: 2px solid #D32F2F;
+}
+
+h1 {
+    font-weight: 600; /* Titre en gras */
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-weight: 600;
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    font-size: 1.2em;
+    margin: 10px 0;
+    text-align: left;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:focus {
+    outline: none;
+}
+
+@media (max-width: 768px) {
+    .popup {
+        width: 90%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2, h3 {
+        font-size: 1.3em;
+    }
+
+    ul li {
+        font-size: 1em;
+    }
+
+    button {
+        font-size: 1em;
+        padding: 12px 25px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="popup {% if winner == 'Joueur' %}popup-winner{% else %}popup-loser{% endif %}">
+        <h1>{{ winner }} a gagné le combat</h1>
+        <h2>Résumé du Combat</h2>
+
+        <h3>Équipe Joueur :</h3>
+        <ul>
+            {% for pokemon in player_team %}
+                <li>{{ pokemon.name }} - PV Restants : {{ pokemon.stats.hp }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Équipe de l'IA :</h3>
+        <ul>
+            {% for pokemon in ia_team %}
+                <li>{{ pokemon.name }} - PV Restants : {{ pokemon.stats.hp }}</li>
+            {% endfor %}
+        </ul>
+
+        <form method="GET" action="{% url 'battle_view' %}">
+            <button type="submit">Rejouer</button>
+        </form>
+    </div>
+</body>
+</html>

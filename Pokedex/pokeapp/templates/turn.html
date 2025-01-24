@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Pokémon</title>
+
+    <!-- Ajout de la police Poppins depuis Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif; /* Changement de police */
+            background-color: #282c34;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1, h2 {
+            margin-top: 20px;
+            font-weight: 600; /* Police en gras pour les titres */
+        }
+
+        .battle-arena {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 40px;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 15px;
+        }
+
+        .pokemon-card {
+            text-align: center;
+        }
+
+        .pokemon-card img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .pokemon-card .stats {
+            font-size: 14px;
+        }
+
+        .actions {
+            margin: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600; /* Police plus épaisse pour les boutons */
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .pokemon-selection {
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+            scrollbar-width: thin; /* Style des barres de défilement */
+            scrollbar-color: #666 #444;
+        }
+
+        .pokemon-thumb {
+            flex: 0 0 auto; /* Empêche les éléments de passer à la ligne */
+            min-width: 120px;
+            background-color: #555;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .pokemon-thumb:hover {
+            transform: scale(1.1);
+            background-color: #666;
+        }
+
+        .pokemon-thumb img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        .pokemon-thumb p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .pokemon-selection::-webkit-scrollbar {
+            height: 8px; /* Épaisseur de la barre */
+        }
+
+        .pokemon-selection::-webkit-scrollbar-thumb {
+            background-color: #666;
+            border-radius: 5px;
+        }
+
+        .pokemon-selection::-webkit-scrollbar-track {
+            background-color: #444;
+        }
+
+        .log-container {
+            margin: 20px auto;
+            width: 80%;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .log-entry {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<h1>Combat Pokémon</h1>
+<div class="battle-arena">
+    <div class="pokemon-card">
+        <h2>{{ player_pokemon.name }}</h2>
+        <img src="{{ player_pokemon.image_url }}" alt="{{ player_pokemon.name }}">
+        <div class="stats">
+            <p>PV : {{ player_pokemon.stats.hp }}</p>
+            <p>Dégâts : {{ potential_damage_player }}</p>
+        </div>
+    </div>
+    <h2>VS</h2>
+    <div class="pokemon-card">
+        <h2>{{ ia_pokemon.name }}</h2>
+        <img src="{{ ia_pokemon.image_url }}" alt="{{ ia_pokemon.name }}">
+        <div class="stats">
+            <p>PV : {{ ia_pokemon.stats.hp }}</p>
+            <p>Dégâts potentiels : {{ potential_damage_ia }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="actions">
+    <form method="POST" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="attack">
+        <button class="button" type="submit">Attaquer</button>
+    </form>
+</div>
+
+<h2>Changer de Pokémon</h2>
+<div class="pokemon-selection">
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="change">
+        <div>
+            {% for pokemon in player_team %}
+            {% if pokemon.stats.hp > 0 %}
+            <div class="pokemon-thumb"
+                 onclick="document.getElementById('chosen_pokemon').value = '{{ forloop.counter0 }}'; this.closest('form').submit();">
+                <img src="{{ pokemon.image_url }}" alt="{{ pokemon.name }}">
+                <p>{{ pokemon.name }}</p>
+                <p>PV : {{ pokemon.stats.hp }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <input type="hidden" name="chosen_pokemon" id="chosen_pokemon">
+    </form>
+</div>
+
+<div class="log-container">
+    <h3>Journal de Combat</h3>
+    <ul>
+        {% for log in battle_log %}
+        <li class="log-entry">{{ log }}</li>
+        {% empty %}
+        <li>Aucun événement pour le moment.</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
